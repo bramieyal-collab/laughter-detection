@@ -1,9 +1,17 @@
 import pandas as pd, numpy as np, math, os
-from praatio import tgio
-from nltk.tokenize import word_tokenize
+# praatio and nltk were imported here but never referenced anywhere in this module. Left as
+# optional so that a missing corpus-annotation toolchain cannot stop the model from running.
+try:
+    from praatio import tgio
+except ImportError:  # pragma: no cover - only needed for TextGrid work
+    tgio = None
+try:
+    from nltk.tokenize import word_tokenize
+except ImportError:  # pragma: no cover - only needed for tokenisation
+    word_tokenize = None
 from joblib import Parallel, delayed
-import text_utils
-import audio_utils
+from . import text_utils
+from . import audio_utils
 import itertools
 from tqdm import tqdm
 

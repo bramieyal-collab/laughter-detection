@@ -57,3 +57,8 @@ scripts/train_backup.py
 
 
 
+
+# Build metadata from `pip install -e`
+*.egg-info/
+__pycache__/
+*.pyc

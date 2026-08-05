@@ -1,6 +1,6 @@
-import sys, numpy as np
-sys.path.append('./utils')
-import models, audio_utils
+import numpy as np
+from . import models
+from .utils import audio_utils
 from functools import partial
 
 # takes a batch tuple (X,y)

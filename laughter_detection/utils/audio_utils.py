@@ -4,13 +4,12 @@ from tqdm import tqdm
 from functools import partial
 #from keras.preprocessing.sequence import pad_sequences as keras_pad_seqs
 from collections import defaultdict
-import text_utils
+from . import text_utils
 from sklearn.utils import shuffle
 import copy, random
 import six
 import warnings
 import scipy.signal
-import pyloudnorm as pyln
 
 warnings.filterwarnings('ignore', category=UserWarning)
 
@@ -389,6 +388,10 @@ def random_pitch(y, sr, prob=0.2, min_shift=-4, max_shift=5, bins_per_octave=24)
         return y
 
 def random_noise(y, sr, noise_signals, min_snr=6, max_snr=30, prob=1.):
+    # pyloudnorm is imported here rather than at module level: this augmentation is used only
+    # when training, and requiring it at import time blocked inference entirely.
+    import pyloudnorm as pyln
+
     if np.random.uniform(0,1) < prob:
         meter = pyln.Meter(sr)
         snr = np.random.uniform(min_snr, max_snr)

@@ -2,8 +2,11 @@ import numpy as np, os, sys, shutil, time, math
 import torch
 from torch import nn
 from torch.autograd import Variable
-from tensorboardX import SummaryWriter
-import text_utils
+from . import text_utils
+
+# tensorboardX is a *training* dependency, imported lazily in train_model() below. At module level
+# it made inference impossible without installing it, and it pulls in protobuf, which collides
+# with the TensorFlow already present in some consuming environments.
 
 # Import different progress bar depending on environment
 # https://stackoverflow.com/questions/15411967/how-can-i-check-if-code-is-executed-in-the-ipython-notebook
@@ -312,6 +315,10 @@ def run_epoch(model, mode, device, loss_type='x_ent', optimizer=None, clip=1,
 		_run_batch = _eval_batch
 
 	epoch_loss = 0
+
+	# Training-only dependency, imported at point of use so that importing this module for
+	# inference does not require tensorboardX (and therefore protobuf) to be installed.
+	from tensorboardX import SummaryWriter
 
 	writer = SummaryWriter(checkpoint_dir)
 

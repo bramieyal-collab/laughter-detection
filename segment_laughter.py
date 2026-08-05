@@ -4,10 +4,13 @@
 import os, sys, pickle, time, librosa, argparse, torch, numpy as np, pandas as pd, scipy
 from tqdm import tqdm
 import tgt
-sys.path.append('./utils/')
-import laugh_segmenter
-import models, configs
-import dataset_utils, audio_utils, data_loaders, torch_utils
+from laughter_detection import laugh_segmenter, models, configs
+from laughter_detection.utils import (
+    dataset_utils,
+    audio_utils,
+    data_loaders,
+    torch_utils,
+)
 from tqdm import tqdm
 from torch import optim, nn
 from functools import partial

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "laughter-detection"
+version = "0.1.0"
+description = "Laughter detection (Gillick et al.), packaged as an importable library"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+
+# Deliberately empty. The consuming application already pins torch, librosa, numpy and the rest
+# to versions that work together in its own environment; declaring them here would let pip
+# "helpfully" upgrade torch underneath it. Install this with --no-deps into an environment that
+# already has the scientific stack.
+dependencies = []
+
+# No [project.scripts] entry for segment_laughter.py: it parses arguments at module level with no
+# main() and no __main__ guard, so importing it *runs* it. It stays a script you invoke with
+# `python segment_laughter.py`, exactly as upstream intended.
+
+[tool.setuptools]
+# Only the package. checkpoints/, data/ and scripts/ stay in the repository and are referenced by
+# path, because ~49 MB of model weights has no business inside a wheel.
+packages = ["laughter_detection", "laughter_detection.utils"]
